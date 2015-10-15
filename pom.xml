@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.voya</groupId>
+  <artifactId>voya-functions</artifactId>
+  <version>1</version>
+  <packaging>jar</packaging>
+
+  <name>function</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <gemfire.version>8.1.0</gemfire.version>
+    <!--  Use same version as Gemfire bundles -->
+    <log4j2.version>2.1</log4j2.version>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>gemfire-repository</id>
+      <name>Gemfire Repository</name>
+      <url>http://dist.gemstone.com/maven/release</url>
+            <releases>
+                  <enabled>true</enabled>
+                    <updatePolicy>never</updatePolicy>
+                </releases>
+                <snapshots>
+                  <enabled>false</enabled>
+                </snapshots>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.gemstone.gemfire</groupId>
+      <artifactId>gemfire</artifactId>
+      <version>${gemfire.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>
