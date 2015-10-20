@@ -9,6 +9,6 @@ public class ExceptionHelpers {
         RuntimeException serializableException = new RuntimeException(exception.getMessage());
         serializableException.setStackTrace(exception.getStackTrace());
         Log.getLog().info(exception.getMessage());
-        resultSender.sendResult(exception.getMessage());
+        resultSender.sendException(exception);
     }
 }

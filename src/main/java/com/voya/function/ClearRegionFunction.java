@@ -4,17 +4,15 @@ import static com.voya.common.ExceptionHelpers.sendStrippedException;
 
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 import com.gemstone.gemfire.cache.Cache;
 import com.gemstone.gemfire.cache.CacheFactory;
 import com.gemstone.gemfire.cache.Declarable;
-import com.gemstone.gemfire.cache.Region;
 import com.gemstone.gemfire.cache.execute.Function;
 import com.gemstone.gemfire.cache.execute.FunctionContext;
-import com.gemstone.gemfire.cache.execute.ResultSender;
+import com.voya.service.ClearRegion;
 
-public class ClearRegion implements Function, Declarable {
+public class ClearRegionFunction implements Function, Declarable {
   private static final long serialVersionUID = 1L;
   private Cache cache;
     /**
@@ -24,7 +22,7 @@ public class ClearRegion implements Function, Declarable {
      */
 	@SuppressWarnings("unchecked")
 	public void execute(FunctionContext context) {
-        try {
+		try {
         	cache = CacheFactory.getAnyInstance();
         	Object argument = context.getArguments();
         	
@@ -44,44 +42,12 @@ public class ClearRegion implements Function, Declarable {
         		throw new RuntimeException("I do not understand the type of region name passed to me: " + argument.getClass().getName());
         	}
         	
-        	for (String regionName : regionNames) {
-        		clearRegion(regionName, context.getResultSender());
-        	}
+        	ClearRegion clearRegion = new ClearRegion(cache, context.getResultSender());
+        	clearRegion.clearRegions(regionNames);
        	} catch (Exception exception) {
     		sendStrippedException(context.getResultSender(), exception);
     	}
         context.getResultSender().lastResult("");
-     }
-
-	private void clearRegion(String regionName, ResultSender<Object> resultSender) {
-		try {
-       	  cache.getLogger().info("ClearRegion> processing region:" + regionName);
-    	
-       	  Region<?, ?> region = cache.getRegion(regionName);
-		    
-		  cache.getLogger().fine("I'm past getting the region");
-		  cache.getLogger().info("Got region:" + region.getFullPath());
-             
-          Set<?> keys = region.keySet();
-          Integer numberOfEntries = keys.size();
- 
-          cache.getLogger()
-              .info("Removing " + numberOfEntries + " entries from " + region.getName() + " region.");
-
-          // loop rather than removeAll because Voya may use a non-String key
-          for (Object key : keys) {
-            region.remove(key);
-          }
- 
-          cache.getLogger()
-             .fine("Sending back " + numberOfEntries + " entries");
-
-          // return the number of deletes or an error message
-          resultSender.sendResult(numberOfEntries);
-
-    	} catch (Exception exception) {
-    		sendStrippedException(resultSender, exception);
-    	}
     }
 	
     /*

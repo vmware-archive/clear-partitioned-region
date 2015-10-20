@@ -11,6 +11,7 @@ local.properties
 .settings/
 .loadpath
 .DS_Store
+vf.*
 
 # Eclipse Core
 .project
@@ -37,6 +38,8 @@ local.properties
 .target
 
 grid/.DS_Store
-grid/LocatorA/
-grid/serverVoya1/
+grid/locator1/
+grid/server1/
+grid/server2/
+grid/server3/
 grid/disk-store/

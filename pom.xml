@@ -4,7 +4,7 @@
 
   <groupId>com.voya</groupId>
   <artifactId>voya-functions</artifactId>
-  <version>2</version>
+  <version>3</version>
   <packaging>jar</packaging>
 
   <name>function</name>
@@ -16,6 +16,7 @@
     <!--  Use same version as Gemfire bundles -->
     <log4j2.version>2.1</log4j2.version>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <junit.version>4.11</junit.version>
   </properties>
 
   <repositories>
@@ -34,10 +35,10 @@
   </repositories>
 
   <dependencies>
-    <dependency>
+     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
