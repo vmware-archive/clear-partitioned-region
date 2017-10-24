@@ -26,7 +26,7 @@ public class ClearRegionFunction implements Function, Declarable {
         	cache = CacheFactory.getAnyInstance();
         	Object argument = context.getArguments();
         	
-         	// when passing from a client, this is a String.
+        // when passing from a client, this is a String.
         	// when executing from gfsh, it is a String[]
         	String regionNames[] = null;
         	if (argument instanceof String) {
@@ -45,7 +45,7 @@ public class ClearRegionFunction implements Function, Declarable {
         	ClearRegion clearRegion = new ClearRegion(cache, context.getResultSender());
         	clearRegion.clearRegions(regionNames);
        	} catch (Exception exception) {
-    		sendStrippedException(context.getResultSender(), exception);
+    		sendStrippedException(context.getResultSender(), exception, cache.getLogger());
     	}
         context.getResultSender().lastResult("");
     }

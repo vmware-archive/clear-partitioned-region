@@ -5,6 +5,7 @@ import static com.voya.common.ExceptionHelpers.sendStrippedException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -52,14 +53,14 @@ public class ClearRegion {
 	   	  Region<?, ?> region = cache.getRegion(regionName);
 		  
 	   	  if (region == null) {
-			  log.error("regionName " + regionName + " does not exist.");
-		      resultSender.sendResult("regionName " + regionName + " does not exist.");
+			  log.error("region " + regionName + " does not exist.");
+		      resultSender.sendResult("region " + regionName + " does not exist.");
 	   	  }
 	   	  else {
 	   		  removeEntriesFromRegion(region);
 	   	  }	 
       } catch (Exception exception) {
-	    sendStrippedException(resultSender, exception);
+	    sendStrippedException(resultSender, exception, log);
       }
 	}
 	
@@ -72,17 +73,30 @@ public class ClearRegion {
 	      log.info("Removing " + numberOfEntries + " entries from " + region.getName() + " region.");
 
 	      // if the key is a String then shortcut the clearing process
+	      // remove in batches of 1,000 to relieve CPU resources on CPU starved systems
 	      RegionAttributes<?, ?> regionAttributes = region.getAttributes();
 	      Class<?> clazz = regionAttributes.getKeyConstraint();
 	      if (clazz != null && clazz == String.class) {
-	    	region.removeAll((Collection) keys);
+	    	  	Iterator<String> keysIter = (Iterator<String>) keys.iterator();
+	    	  	int numberOfBatches = numberOfEntries/1000 + 1;
+	    	  	for (int i=0; i<numberOfBatches; i++) {
+	    	  		Set<String> keyBatch = new HashSet<>();
+	    	  		for (int j=0; j<1000; j++) {
+	    	  			int k = i*j;
+	    	  			if (k >= numberOfEntries) {
+	    	  				break;
+	    	  			}
+	    	  			keyBatch.add(keysIter.next());
+	    	  		}
+		    	  	region.removeAll((Collection) keyBatch);
+	    	  	}
 	      }
 	      else {
 	        removeOneByOne(region, keys);
 	      }
 	      
-	      log.fine("Sending back " + numberOfEntries + " entries");
-	      resultSender.sendResult("regionName " + region.getName() + ": " + numberOfEntries);
+	      log.info("Removed " + numberOfEntries + " entries");
+	      resultSender.sendResult("Removed from region " + region.getName() + ": " + numberOfEntries);
 	}
 	
 	private void removeOneByOne(Region<?, ?> region, Set<?> keys) {

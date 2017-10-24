@@ -9,8 +9,9 @@ start locator --name=locator1 --port=10334 --properties-file=config/locator.prop
 
 start server --name=server1 --server-port=0 --properties-file=config/gemfire.properties --cache-xml-file=./config/cache.xml --initial-heap=1g --max-heap=1g
 start server --name=server2 --server-port=0 --properties-file=config/gemfire.properties --cache-xml-file=./config/cache.xml --initial-heap=1g --max-heap=1g
-start server --name=server3 --server-port=0 --properties-file=config/gemfire.properties --cache-xml-file=./config/cache.xml --initial-heap=1g --max-heap=1g
+#start server --name=server3 --server-port=0 --properties-file=config/gemfire.properties --cache-xml-file=./config/cache.xml --initial-heap=1g --max-heap=1g
 
+undeploy --jar=../target/gfsh-function.jar
 deploy --jar=../target/gfsh-function.jar
 
 list members;
