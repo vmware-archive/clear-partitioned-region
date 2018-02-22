@@ -1,7 +1,9 @@
-package com.gemstone.gemfire.cache.execute;
+package io.pivotal.collectors;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.gemstone.gemfire.cache.execute.ResultSender;
 
 public class MockResultSender<T> implements ResultSender<T> {
 

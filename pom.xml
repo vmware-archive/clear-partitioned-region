@@ -2,21 +2,22 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.voya</groupId>
-  <artifactId>voya-functions</artifactId>
-  <version>3</version>
+  <groupId>io.pivotal</groupId>
+  <artifactId>clear-region-function</artifactId>
+  <version>2</version>
   <packaging>jar</packaging>
 
-  <name>function</name>
+  <name>clear-region-function</name>
   <url>http://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <gemfire.version>8.1.0</gemfire.version>
+    <gemfire.version>8.2.0</gemfire.version>
     <!--  Use same version as Gemfire bundles -->
     <log4j2.version>2.1</log4j2.version>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <junit.version>4.11</junit.version>
+     <java.version>1.8</java.version>
   </properties>
 
   <repositories>
@@ -48,4 +49,19 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+  
+   <build>
+     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
 </project>
